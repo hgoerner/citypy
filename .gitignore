@@ -16,3 +16,4 @@ venv.bak/
 
 # Pytest cache
 .pytest_cache/
+.venv
