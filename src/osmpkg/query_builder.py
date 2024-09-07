@@ -19,7 +19,7 @@ class QueryBuilder:
         self.node_config = self._load_file(self.node_file)
         if not self.node_config:
             print(
-                f"Warning: Failed to load or validate node configuration from {self.node_file}. Continuing with area configuration."
+                f"Warning: Failed to load or validate node configuration from {self.node_file}.\ Continuing with area configuration."
             )
 
         # Load area configuration
@@ -92,28 +92,29 @@ class QueryBuilder:
         # Build area queries if valid area configuration exists
         if self.area_config:
             for osm_key, osm_value in self.area_config.items():
-                query_parts.extend(
-                    (
-                        self._build_query_part(
-                            osm_key,
-                            osm_value,
-                            "way",
-                            country_code,
-                            city,
-                            admin_level_country,
-                            admin_level_city,
-                        ),
-                        self._build_query_part(
-                            osm_key,
-                            osm_value,
-                            "relation",
-                            country_code,
-                            city,
-                            admin_level_country,
-                            admin_level_city,
-                        ),
+                query_parts.append(
+                    self._build_query_part(
+                        osm_key,
+                        osm_value,
+                        "way",
+                        country_code,
+                        city,
+                        admin_level_country,
+                        admin_level_city,
                     )
                 )
+                query_parts.append(
+                    self._build_query_part(
+                        osm_key,
+                        osm_value,
+                        "relation",
+                        country_code,
+                        city,
+                        admin_level_country,
+                        admin_level_city,
+                    )
+                )
+
         # Return a list of single queries
         return query_parts
 
@@ -137,13 +138,3 @@ class QueryBuilder:
             (._;>;);
             out geom;
             """
-
-
-# Initialize the query builder and build the query
-query_builder = QueryBuilder()
-print(query_builder.node_config)
-print(query_builder.area_config)
-query = query_builder.build_single_queries("DE", "Berlin", 2, 4)
-
-# Print the generated query
-print(query)
