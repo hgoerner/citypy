@@ -3,12 +3,12 @@ import json
 
 
 class ConfigLoader:
-    
+
     @staticmethod
     def load_node_tags():
         node_tag_file = r"config\node_tags.json"
         try:
-            with open(node_tag_file, 'r',encoding='utf8') as file:
+            with open(node_tag_file, "r", encoding="utf8") as file:
                 return json.load(file)
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Error loading config: {e}")
@@ -18,11 +18,10 @@ class ConfigLoader:
     def load_relation_tags():
         relation_tag_file = r"config\relation_tags.json"
         try:
-            with open(relation_tag_file, "r",encoding='utf8') as file:
+            with open(relation_tag_file, "r", encoding="utf8") as file:
                 return json.load(file)
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Error loading config: {e}")
             return {}
-    
-    #TODO, add function to change config file with city etc.
-    
+
+    # TODO, add function to change config file with city etc.

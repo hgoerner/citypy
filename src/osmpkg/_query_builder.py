@@ -1,20 +1,19 @@
-# overpass_query.py
-
+# src\src\osmpkg\_query_builder.py
 # Private class for building queries
 import urllib.parse
 from _config_loader import ConfigLoader
 
 
 class _OverpassQueryBuilder:
+
     def __init__(self):
         # Load separate config files for nodes and areas
         # TODOBuild config loader
+
         self.node_config = ConfigLoader.load_node_tags()
         self.area_config = ConfigLoader.load_relation_tags()
 
-    def build_combined_query(
-        self, country_code, city, admin_level_country, admin_level_city
-    ):
+    def build_combined_query(self, country_code, city, admin_level_country, admin_level_city):
         query_parts = []
 
         # Build node queries
@@ -24,11 +23,8 @@ class _OverpassQueryBuilder:
                 query_parts.append(f"node[{encoded_key}](area.city)(area.country);")
             else:
                 encoded_value = urllib.parse.quote(osm_value)
-                query_parts.append(
-                    f"node[{encoded_key}={encoded_value}](area.city)(area.country);"
-                )
+                query_parts.append(f"node[{encoded_key}={encoded_value}](area.city)(area.country);")
 
-        # Build area queries (ways/relations)
         for osm_key, osm_value in self.area_config.items():
             encoded_key = urllib.parse.quote(osm_key)
             if osm_value is None:
